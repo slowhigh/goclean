@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -9,7 +8,6 @@ import (
 	"github.com/slowhigh/goclean/infra/database"
 	"github.com/slowhigh/goclean/internal/entity"
 	"github.com/slowhigh/goclean/internal/usecase/interactor"
-	"gorm.io/gorm"
 )
 
 type MemoRepo struct {
@@ -28,11 +26,9 @@ func (clr *MemoRepo) FindOne(id int64) (*entity.Memo, error) {
 		memo entity.Memo
 	)
 
-	res := clr.db.First(&memo, id)
-	if errors.Is(res.Error, gorm.ErrRecordNotFound) {
-		return nil, gorm.ErrRecordNotFound
-	} else if res.Error != nil {
-		return nil, res.Error
+	err := clr.db.First(&memo, id).Error
+	if err != nil {
+		return nil, err
 	}
 
 	return &memo, nil
@@ -101,16 +97,15 @@ func (clr *MemoRepo) FindAll(start *time.Time, end *time.Time, keyword *string, 
 		Limit(perPage).
 		Debug().
 		Find(&memos).Error
+
 	return &memos, err
 }
 
 // Create implements interactor.MemoRepo.
 func (clr *MemoRepo) Create(newMemo entity.Memo) (*entity.Memo, error) {
-	res := clr.db.Create(&newMemo)
-	if res.Error != nil {
-		return nil, res.Error
-	} else if res.RowsAffected < 1 {
-		return nil, errors.New("fewer than 1 row affected")
+	err := clr.db.Create(&newMemo).Error
+	if err != nil {
+		return nil, err
 	}
 
 	return &newMemo, nil
@@ -122,19 +117,15 @@ func (clr *MemoRepo) Update(newMemo entity.Memo) (*entity.Memo, error) {
 		memo entity.Memo
 	)
 
-	res := clr.db.First(&memo, newMemo.ID)
-	if errors.Is(res.Error, gorm.ErrRecordNotFound) {
-		return nil, gorm.ErrRecordNotFound
-	} else if res.Error != nil {
-		return nil, res.Error
+	err := clr.db.First(&memo, newMemo.ID).Error
+	if err != nil {
+		return nil, err
 	}
 
 	memo = newMemo
-	res = clr.db.Save(&memo)
-	if res.Error != nil {
-		return nil, res.Error
-	} else if res.RowsAffected < 1 {
-		return nil, errors.New("fewer than 1 row affected")
+	err = clr.db.Save(&memo).Error
+	if err != nil {
+		return nil, err
 	}
 
 	return &memo, nil
@@ -146,18 +137,14 @@ func (clr *MemoRepo) Delete(id int64) (*entity.Memo, error) {
 		memo entity.Memo
 	)
 
-	res := clr.db.First(&memo, id)
-	if errors.Is(res.Error, gorm.ErrRecordNotFound) {
-		return nil, gorm.ErrRecordNotFound
-	} else if res.Error != nil {
-		return nil, res.Error
+	err := clr.db.First(&memo, id).Error
+	if err != nil {
+		return nil, err
 	}
 
-	res = clr.db.Delete(&entity.Memo{}, id)
-	if res.Error != nil {
-		return nil, res.Error
-	} else if res.RowsAffected < 1 {
-		return nil, errors.New("fewer than 1 row affected")
+	err = clr.db.Delete(&entity.Memo{}, id).Error
+	if err != nil {
+		return nil, err
 	}
 
 	return &memo, nil
