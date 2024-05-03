@@ -48,32 +48,32 @@ func (mu MemoUsecase) FindAllMemo(start, end *time.Time, keyword *string, page i
 	return memos, true
 }
 
-func (mu MemoUsecase) CreateMemo(newMemo entity.Memo) *entity.Memo {
+func (mu MemoUsecase) CreateMemo(newMemo entity.Memo) (*entity.Memo, bool) {
 	memo, err := mu.memoRepo.Create(newMemo)
 	if err != nil {
 		slog.Error(err.Error())
-		return nil
+		return nil, false
 	}
 
-	return memo
+	return memo, true
 }
 
-func (mu MemoUsecase) UpdateMemo(newMemo entity.Memo) *entity.Memo {
-	memo, err := mu.memoRepo.Update(newMemo)
+func (mu MemoUsecase) UpdateMemo(id int64, newMemo entity.Memo) (*entity.Memo, bool) {
+	memo, err := mu.memoRepo.Update(id, newMemo)
 	if err != nil {
 		slog.Error(err.Error())
-		return nil
+		return nil, false
 	}
 
-	return memo
+	return memo, true
 }
 
-func (mu MemoUsecase) DeleteMemo(id int64) *entity.Memo {
+func (mu MemoUsecase) DeleteMemo(id int64) (*entity.Memo, bool) {
 	memo, err := mu.memoRepo.Delete(id)
 	if err != nil {
 		slog.Error(err.Error())
-		return nil
+		return nil, false
 	}
 
-	return memo
+	return memo, true
 }
