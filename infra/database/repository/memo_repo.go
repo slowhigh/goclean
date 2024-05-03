@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -8,6 +9,7 @@ import (
 	"github.com/slowhigh/goclean/infra/database"
 	"github.com/slowhigh/goclean/internal/entity"
 	"github.com/slowhigh/goclean/internal/usecase/interactor"
+	"gorm.io/gorm"
 )
 
 type MemoRepo struct {
@@ -20,14 +22,28 @@ func NewMemo(db *database.Database) interactor.MemoRepo {
 	}
 }
 
+// Exist implements interactor.MemoRepo.
+func (clr *MemoRepo) Exist(id int64) (bool, error) {
+	err := clr.db.Take(&entity.Memo{}).Select("id").Where("id = ?", id).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return false, nil
+	} else if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
 // FindOne implements interactor.MemoRepo.
 func (clr *MemoRepo) FindOne(id int64) (*entity.Memo, error) {
 	var (
 		memo entity.Memo
 	)
 
-	err := clr.db.First(&memo, id).Error
-	if err != nil {
+	err := clr.db.Take(&memo, id).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil
+	} else if err != nil {
 		return nil, err
 	}
 
@@ -112,12 +128,12 @@ func (clr *MemoRepo) Create(newMemo entity.Memo) (*entity.Memo, error) {
 }
 
 // Update implements interactor.MemoRepo.
-func (clr *MemoRepo) Update(newMemo entity.Memo) (*entity.Memo, error) {
+func (clr *MemoRepo) Update(id int64, newMemo entity.Memo) (*entity.Memo, error) {
 	var (
 		memo entity.Memo
 	)
 
-	err := clr.db.First(&memo, newMemo.ID).Error
+	err := clr.db.First(&memo, id).Error
 	if err != nil {
 		return nil, err
 	}
