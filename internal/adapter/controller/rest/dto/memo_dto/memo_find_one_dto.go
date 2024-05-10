@@ -7,7 +7,7 @@ import (
 )
 
 type FindOneMemoInput struct {
-	ID int64 `json:"id" binding:"required"`
+	ID int64
 }
 
 type FindOneMemoOutput struct {

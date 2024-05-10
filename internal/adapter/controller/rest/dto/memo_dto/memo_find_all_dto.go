@@ -7,10 +7,10 @@ import (
 )
 
 type FindAllMemoInput struct {
-	Start   *time.Time `json:"start" binding:"required"`
-	End     *time.Time `json:"end" binding:"required"`
-	Keyword *string    `json:"keyword" binding:"required"`
-	Page    *int       `json:"page" binding:"required"`
+	Start   *time.Time `form:"start"`
+	End     *time.Time `form:"end"`
+	Keyword *string    `form:"keyword"`
+	Page    *int       `form:"page" binding:"required"`
 }
 
 type FindAllMemoOutput struct {

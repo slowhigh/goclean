@@ -7,7 +7,7 @@ import (
 )
 
 type DeleteMemoInput struct {
-	ID *int64 `json:"id" binding:"required"`
+	ID int64
 }
 
 type DeleteMemoOutput struct {
