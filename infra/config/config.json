@@ -1,0 +1,16 @@
+{
+  "APP": {
+    "MODE": "dev"
+  },
+  "REST": {
+    "PORT": 5000,
+    "MODE": "debug"
+  },
+  "DATABASE": {
+    "HOST": "localhost",
+    "PORT": 5432,
+    "USER_NAME": "goclean",
+    "PASSWORD": "goclean1!",
+    "DB_NAME": "goclean"
+  }
+}
