@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -9,7 +8,6 @@ import (
 	"github.com/slowhigh/goclean/infra/database"
 	"github.com/slowhigh/goclean/internal/entity"
 	"github.com/slowhigh/goclean/internal/usecase/interactor"
-	"gorm.io/gorm"
 )
 
 type MemoRepo struct {
@@ -17,6 +15,8 @@ type MemoRepo struct {
 }
 
 func NewMemo(db *database.Database) interactor.MemoRepo {
+	db.AutoMigrate(&entity.Memo{})
+
 	return &MemoRepo{
 		db: db,
 	}
@@ -25,9 +25,7 @@ func NewMemo(db *database.Database) interactor.MemoRepo {
 // Exist implements interactor.MemoRepo.
 func (clr *MemoRepo) Exist(id int64) (bool, error) {
 	err := clr.db.Take(&entity.Memo{}).Select("id").Where("id = ?", id).Error
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return false, nil
-	} else if err != nil {
+	if err != nil {
 		return false, err
 	}
 
@@ -35,23 +33,21 @@ func (clr *MemoRepo) Exist(id int64) (bool, error) {
 }
 
 // FindOne implements interactor.MemoRepo.
-func (clr *MemoRepo) FindOne(id int64) (*entity.Memo, error) {
+func (clr *MemoRepo) FindOne(id int64) (entity.Memo, error) {
 	var (
 		memo entity.Memo
 	)
 
 	err := clr.db.Take(&memo, id).Error
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, nil
-	} else if err != nil {
-		return nil, err
+	if err != nil {
+		return entity.Memo{}, err
 	}
 
-	return &memo, nil
+	return memo, nil
 }
 
 // Count implements interactor.MemoRepo.
-func (clr *MemoRepo) Count(start, end *time.Time, keyword *string) (*int64, error) {
+func (clr *MemoRepo) Count(start, end *time.Time, keyword *string) (int64, error) {
 	var (
 		count      int64
 		conditions = strings.Builder{}
@@ -59,12 +55,12 @@ func (clr *MemoRepo) Count(start, end *time.Time, keyword *string) (*int64, erro
 	)
 
 	if start != nil {
-		conditions.WriteString(" AND timestamp >= ?")
+		conditions.WriteString(" AND created_at >= ?")
 		param = append(param, *start)
 	}
 
 	if end != nil {
-		conditions.WriteString(" AND timestamp <= ?")
+		conditions.WriteString(" AND created_at <= ?")
 		param = append(param, *end)
 	}
 
@@ -77,14 +73,14 @@ func (clr *MemoRepo) Count(start, end *time.Time, keyword *string) (*int64, erro
 		Where(fmt.Sprintf("1=1%s", conditions.String()), param...).
 		Count(&count).Error
 	if err != nil {
-		return nil, err
+		return -1, err
 	}
 
-	return &count, nil
+	return count, nil
 }
 
 // FindAll implements interactor.MemoRepo.
-func (clr *MemoRepo) FindAll(start *time.Time, end *time.Time, keyword *string, perPage int, page int) (*[]entity.Memo, error) {
+func (clr *MemoRepo) FindAll(start *time.Time, end *time.Time, keyword *string, perPage int, page int) ([]entity.Memo, error) {
 	var (
 		memos      []entity.Memo
 		conditions = strings.Builder{}
@@ -92,12 +88,12 @@ func (clr *MemoRepo) FindAll(start *time.Time, end *time.Time, keyword *string, 
 	)
 
 	if start != nil {
-		conditions.WriteString(" AND timestamp >= ?")
+		conditions.WriteString(" AND created_at >= ?")
 		param = append(param, *start)
 	}
 
 	if end != nil {
-		conditions.WriteString(" AND timestamp <= ?")
+		conditions.WriteString(" AND created_at <= ?")
 		param = append(param, *end)
 	}
 
@@ -108,60 +104,60 @@ func (clr *MemoRepo) FindAll(start *time.Time, end *time.Time, keyword *string, 
 
 	err := clr.db.Model(&entity.Memo{}).
 		Where(fmt.Sprintf("1=1%s", conditions.String()), param...).
-		Order("timestamp DESC").
+		Order("created_at DESC").
 		Offset((page - 1) * perPage).
 		Limit(perPage).
 		Debug().
 		Find(&memos).Error
 
-	return &memos, err
+	return memos, err
 }
 
 // Create implements interactor.MemoRepo.
-func (clr *MemoRepo) Create(newMemo entity.Memo) (*entity.Memo, error) {
+func (clr *MemoRepo) Create(newMemo entity.Memo) (entity.Memo, error) {
 	err := clr.db.Create(&newMemo).Error
 	if err != nil {
-		return nil, err
+		return entity.Memo{}, err
 	}
 
-	return &newMemo, nil
+	return newMemo, nil
 }
 
 // Update implements interactor.MemoRepo.
-func (clr *MemoRepo) Update(id int64, newMemo entity.Memo) (*entity.Memo, error) {
+func (clr *MemoRepo) Update(id int64, newMemo entity.Memo) (entity.Memo, error) {
 	var (
 		memo entity.Memo
 	)
 
 	err := clr.db.First(&memo, id).Error
 	if err != nil {
-		return nil, err
+		return entity.Memo{}, err
 	}
 
 	memo = newMemo
 	err = clr.db.Save(&memo).Error
 	if err != nil {
-		return nil, err
+		return entity.Memo{}, err
 	}
 
-	return &memo, nil
+	return memo, nil
 }
 
 // Delete implements interactor.MemoRepo.
-func (clr *MemoRepo) Delete(id int64) (*entity.Memo, error) {
+func (clr *MemoRepo) Delete(id int64) (entity.Memo, error) {
 	var (
 		memo entity.Memo
 	)
 
 	err := clr.db.First(&memo, id).Error
 	if err != nil {
-		return nil, err
+		return entity.Memo{}, err
 	}
 
 	err = clr.db.Delete(&entity.Memo{}, id).Error
 	if err != nil {
-		return nil, err
+		return entity.Memo{}, err
 	}
 
-	return &memo, nil
+	return memo, nil
 }
