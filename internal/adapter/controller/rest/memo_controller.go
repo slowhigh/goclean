@@ -1,8 +1,6 @@
 package rest
 
 import (
-	"net/http"
-
 	"github.com/slowhigh/goclean/internal/adapter/controller/rest/dto"
 	"github.com/slowhigh/goclean/internal/adapter/controller/rest/dto/memo_dto"
 	"github.com/slowhigh/goclean/internal/usecase/memo"
@@ -18,88 +16,89 @@ func NewMemoController(msgUsecase memo.MemoUsecase) MemoController {
 	}
 }
 
-func (c MemoController) FindOneMemo(input memo_dto.FindOneMemoInput) (int, *memo_dto.FindOneMemoOutput) {
+func (c MemoController) FindOneMemo(input memo_dto.FindOneMemoReq) (*memo_dto.FindOneMemoRes, bool) {
 	isExist, ok := c.memoUcase.Exist(input.ID)
 	if !ok {
-		return http.StatusInternalServerError, nil
+		return nil, false
 	}
 	if !isExist {
-		return http.StatusOK, nil
+		return nil, true
 	}
 
 	memo, ok := c.memoUcase.FindOne(input.ID)
 	if !ok {
-		return http.StatusInternalServerError, nil
+		return nil, false
 	}
 
-	output := memo_dto.NewFindOneMemoOutput(*memo)
-	return http.StatusOK, &output
+	output := memo_dto.NewFindOneMemoRes(*memo)
+	return &output, true
 }
 
-func (c MemoController) FindAllMemo(input memo_dto.FindAllMemoInput) (int, *dto.Paginated[[]memo_dto.FindAllMemoOutput]) {
+func (c MemoController) FindAllMemo(input memo_dto.FindAllMemoReq) (dto.Paginated[[]memo_dto.FindAllMemoRes], bool) {
 	const perPage = 100
+	data := dto.Paginated[[]memo_dto.FindAllMemoRes]{}
 
 	totalCount, ok := c.memoUcase.CountMemo(input.Start, input.End, input.Keyword)
 	if !ok {
-		return http.StatusInternalServerError, nil
+		return data, false
 	}
 
 	memos, ok := c.memoUcase.FindAllMemo(input.Start, input.End, input.Keyword, perPage, *input.Page)
 	if !ok {
-		return http.StatusInternalServerError, nil
+		return data, false
 	}
 
-	memoOutput := make([]memo_dto.FindAllMemoOutput, len(*memos))
+	memoOutput := make([]memo_dto.FindAllMemoRes, len(*memos))
 	for i, memo := range *memos {
-		memoOutput[i] = *memo_dto.NewFindAllMemoOutput(memo)
+		memoOutput[i] = memo_dto.NewFindAllMemoRes(memo)
 	}
 
-	output := dto.NewPaginatedOutput(memoOutput, *input.Page, perPage, *totalCount)
-	return http.StatusOK, &output
+	data = dto.NewPaginatedRes(memoOutput, *input.Page, perPage, *totalCount)
+	return data, true
 }
 
-func (c MemoController) CreateMemo(input memo_dto.CreateMemoInput) (int, *memo_dto.CreateMemoOutput) {
+func (c MemoController) CreateMemo(input memo_dto.CreateMemoReq) (memo_dto.CreateMemoRes, bool) {
 	memo, ok := c.memoUcase.CreateMemo(input.NewMemo())
 	if !ok {
-		return http.StatusInternalServerError, nil
+		return memo_dto.CreateMemoRes{}, false
 	}
 
-	output := memo_dto.NewCreateMemoOutput(*memo)
-	return http.StatusOK, &output
+	output := memo_dto.NewCreateMemoRes(*memo)
+	return output, true
 }
 
-func (c MemoController) UpdateMemo(input memo_dto.UpdateMemoInput) (int, *memo_dto.UpdateMemoOutput) {
+func (c MemoController) UpdateMemo(input memo_dto.UpdateMemoReq) (*memo_dto.UpdateMemoRes, bool) {
 	isExist, ok := c.memoUcase.Exist(input.ID)
 	if !ok {
-		return http.StatusInternalServerError, nil
+		return nil, false
 	}
 	if !isExist {
-		return http.StatusOK, nil
+		return nil, true
 	}
 
 	memo, ok := c.memoUcase.UpdateMemo(input.ID, input.NewMemo())
 	if !ok {
-		return http.StatusInternalServerError, nil
+		return nil, false
 	}
 
-	output := memo_dto.NewUpdateMemoOutput(*memo)
-	return http.StatusOK, &output
+	output := memo_dto.NewUpdateMemoRes(*memo)
+	return &output, true
 }
 
-func (c MemoController) DeleteMemo(input memo_dto.DeleteMemoInput) (int, *memo_dto.DeleteMemoOutput) {
+func (c MemoController) DeleteMemo(input memo_dto.DeleteMemoReq) (*memo_dto.DeleteMemoRes, bool) {
 	isExist, ok := c.memoUcase.Exist(input.ID)
 	if !ok {
-		return http.StatusInternalServerError, nil
+		return nil, false
 	}
 	if !isExist {
-		return http.StatusOK, nil
+		return nil, true
 	}
 
 	memo, ok := c.memoUcase.DeleteMemo(input.ID)
 	if !ok {
-		return http.StatusInternalServerError, nil
+		return nil, false
 	}
 
-	output := memo_dto.NewDeleteMemoOutput(*memo)
-	return http.StatusOK, &output
+	output := memo_dto.NewDeleteMemoRes(*memo)
+	return &output, true
 }

@@ -6,14 +6,14 @@ import (
 	"github.com/slowhigh/goclean/internal/entity"
 )
 
-type FindAllMemoInput struct {
+type FindAllMemoReq struct {
 	Start   *time.Time `form:"start"`
 	End     *time.Time `form:"end"`
 	Keyword *string    `form:"keyword"`
-	Page    *int       `form:"page" binding:"required"`
+	Page    *int       `form:"page" binding:"required,gte=1"`
 }
 
-type FindAllMemoOutput struct {
+type FindAllMemoRes struct {
 	ID        int64     `json:"id"`
 	CreatedAt time.Time `json:"create_at"`
 	UpdatedAt time.Time `json:"update_at"`
@@ -21,8 +21,8 @@ type FindAllMemoOutput struct {
 	Content   string    `json:"content"`
 }
 
-func NewFindAllMemoOutput(memo entity.Memo) *FindAllMemoOutput {
-	return &FindAllMemoOutput{
+func NewFindAllMemoRes(memo entity.Memo) FindAllMemoRes {
+	return FindAllMemoRes{
 		ID:        int64(memo.ID),
 		CreatedAt: memo.CreatedAt,
 		UpdatedAt: memo.UpdatedAt,

@@ -10,7 +10,7 @@ type Paginated[t any] struct {
 	Data       t     `json:"data"`
 }
 
-func NewPaginatedOutput[t any](data t, page, perPage int, totalCount int64) Paginated[t] {
+func NewPaginatedRes[t any](data t, page, perPage int, totalCount int64) Paginated[t] {
 	return Paginated[t]{
 		Page:       page,
 		PerPage:    perPage,

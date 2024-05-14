@@ -6,11 +6,11 @@ import (
 	"github.com/slowhigh/goclean/internal/entity"
 )
 
-type FindOneMemoInput struct {
+type FindOneMemoReq struct {
 	ID int64
 }
 
-type FindOneMemoOutput struct {
+type FindOneMemoRes struct {
 	ID        int64     `json:"id"`
 	CreatedAt time.Time `json:"create_at"`
 	UpdatedAt time.Time `json:"update_at"`
@@ -18,8 +18,8 @@ type FindOneMemoOutput struct {
 	Content   string    `json:"content"`
 }
 
-func NewFindOneMemoOutput(memo entity.Memo) FindOneMemoOutput {
-	return FindOneMemoOutput{
+func NewFindOneMemoRes(memo entity.Memo) FindOneMemoRes {
+	return FindOneMemoRes{
 		ID:        int64(memo.ID),
 		CreatedAt: memo.CreatedAt,
 		UpdatedAt: memo.UpdatedAt,
