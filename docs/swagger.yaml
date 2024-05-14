@@ -1,0 +1,252 @@
+definitions:
+  github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.CreateMemoReq:
+    properties:
+      content:
+        maxLength: 1000
+        minLength: 1
+        type: string
+      writer:
+        maxLength: 10
+        minLength: 1
+        type: string
+    required:
+    - content
+    - writer
+    type: object
+  github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.CreateMemoRes:
+    properties:
+      content:
+        type: string
+      writer:
+        type: string
+    type: object
+  github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.DeleteMemoRes:
+    properties:
+      content:
+        type: string
+      create_at:
+        type: string
+      id:
+        type: integer
+      update_at:
+        type: string
+      writer:
+        type: string
+    type: object
+  github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.FindAllMemoRes:
+    properties:
+      content:
+        type: string
+      create_at:
+        type: string
+      id:
+        type: integer
+      update_at:
+        type: string
+      writer:
+        type: string
+    type: object
+  github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.FindOneMemoRes:
+    properties:
+      content:
+        type: string
+      create_at:
+        type: string
+      id:
+        type: integer
+      update_at:
+        type: string
+      writer:
+        type: string
+    type: object
+  github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.UpdateMemoReq:
+    properties:
+      content:
+        maxLength: 1000
+        minLength: 1
+        type: string
+      writer:
+        maxLength: 10
+        minLength: 1
+        type: string
+    required:
+    - content
+    - writer
+    type: object
+  github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.UpdateMemoRes:
+    properties:
+      content:
+        type: string
+      create_at:
+        type: string
+      id:
+        type: integer
+      update_at:
+        type: string
+      writer:
+        type: string
+    type: object
+host: localhost:5000
+info:
+  contact: {}
+  description: goclean
+  title: goclean
+  version: "1.0"
+paths:
+  /v1/memo:
+    get:
+      consumes:
+      - application/json
+      description: list memos
+      parameters:
+      - description: createAt search by start
+        example: '"2021-02-18T21:54:42.123Z"'
+        in: query
+        name: start
+        type: string
+      - description: createAt search by end
+        example: '"2021-02-18T21:54:42.123Z"'
+        in: query
+        name: end
+        type: string
+      - description: content search by keyword
+        in: query
+        name: keyword
+        type: string
+      - description: content search by keyword
+        in: query
+        minimum: 1
+        name: page
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.FindAllMemoRes'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: List memo
+      tags:
+      - memo
+    post:
+      consumes:
+      - application/json
+      description: create memo
+      parameters:
+      - description: writer and content for the new memo
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.CreateMemoReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.CreateMemoRes'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Create memo
+      tags:
+      - memo
+  /v1/memo/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete memo
+      parameters:
+      - description: memo delete by id
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.DeleteMemoRes'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Delete memo
+      tags:
+      - memo
+    get:
+      consumes:
+      - application/json
+      description: get memo
+      parameters:
+      - description: ID search by id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.FindOneMemoRes'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Get memo
+      tags:
+      - memo
+    put:
+      consumes:
+      - application/json
+      description: update memo
+      parameters:
+      - description: memo update by id
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - description: writer and content for the new memo
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.UpdateMemoReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.UpdateMemoRes'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Update memo
+      tags:
+      - memo
+schemes:
+- http
+swagger: "2.0"

@@ -4,9 +4,9 @@ package main
 // @version  1.0
 // @description goclean
 
-// @host   localhost:3000
+// @host   localhost:5000
 
-// @schemes https
+// @schemes http
 type Server interface {
 	Run() error
 }

@@ -7,6 +7,7 @@
         "mapstructure",
         "slowhigh",
         "swaggerfiles",
+        "swaggerignore",
         "swaggo",
         "Ucase",
         "usecase",

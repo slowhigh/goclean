@@ -10,6 +10,20 @@ import (
 	"github.com/slowhigh/goclean/internal/adapter/controller/rest/dto/memo_dto"
 )
 
+// GetMemo
+//
+// @Summary			Get memo
+// @Description		get memo
+// @Tags			memo
+// @Schemes			http
+// @Accept			json
+// @Produce			json
+// @Param   		id path int64 true "ID search by id"
+// @Success			200 {object} memo_dto.FindOneMemoRes
+// @Failure			400
+// @Failure			404
+// @Failure			500
+// @Router			/v1/memo/{id} [get]
 func GetMemo(c *gin.Context, ctrl rest.MemoController) {
 	id, ok := validateInt64Param(c, "id")
 	if !ok {
@@ -17,46 +31,136 @@ func GetMemo(c *gin.Context, ctrl rest.MemoController) {
 		return
 	}
 
-	c.JSON(ctrl.FindOneMemo(memo_dto.FindOneMemoInput{ID: *id}))
+	res, ok := ctrl.FindOneMemo(memo_dto.FindOneMemoReq{ID: *id})
+	if !ok {
+		c.Status(http.StatusInternalServerError)
+		return
+	}
+	if res == nil {
+		c.JSON(http.StatusNotFound, nil)
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
 }
 
-func GetMemos(c *gin.Context, ctrl rest.MemoController) {
-	input, ok := validateQuery[memo_dto.FindAllMemoInput](c)
+// ListMemos
+//
+// @Summary			List memo
+// @Description		list memos
+// @Tags			memo
+// @Schemes			http
+// @Accept			json
+// @Produce			json
+// @Param   		start		query	string	false	"createAt search by start"		example("2021-02-18T21:54:42.123Z")
+// @Param   		end			query	string	false	"createAt search by end"		example("2021-02-18T21:54:42.123Z")
+// @Param   		keyword		query	string	false	"content search by keyword"
+// @Param   		page		query	int		true	"content search by keyword"		minimum(1)
+// @Success			200 {object} memo_dto.FindAllMemoRes
+// @Failure			400
+// @Failure			404
+// @Failure			500
+// @Router			/v1/memo [get]
+func ListMemos(c *gin.Context, ctrl rest.MemoController) {
+	req, ok := validateQuery[memo_dto.FindAllMemoReq](c)
 	if !ok {
 		c.Status(http.StatusBadRequest)
 		return
 	}
 
-	c.JSON(ctrl.FindAllMemo(*input))
+	res, ok := ctrl.FindAllMemo(*req)
+	if !ok {
+		c.Status(http.StatusInternalServerError)
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
 }
 
-func PostMemo(c *gin.Context, ctrl rest.MemoController) {
-	input, ok := validateBody[memo_dto.CreateMemoInput](c)
+// CreateMemo
+//
+// @Summary			Create memo
+// @Description		create memo
+// @Tags			memo
+// @Schemes			http
+// @Accept			json
+// @Produce			json
+// @Param   		request body memo_dto.CreateMemoReq true "writer and content for the new memo"
+// @Success			200 {object} memo_dto.CreateMemoRes
+// @Failure			400
+// @Failure			500
+// @Router			/v1/memo [post]
+func CreateMemo(c *gin.Context, ctrl rest.MemoController) {
+	req, ok := validateBody[memo_dto.CreateMemoReq](c)
 	if !ok {
 		c.Status(http.StatusBadRequest)
 		return
 	}
 
-	c.JSON(ctrl.CreateMemo(*input))
+	res, ok := ctrl.CreateMemo(*req)
+	if !ok {
+		c.Status(http.StatusInternalServerError)
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
 }
 
-func PutMemo(c *gin.Context, ctrl rest.MemoController) {
+// UpdateMemo
+//
+// @Summary			Update memo
+// @Description		update memo
+// @Tags			memo
+// @Schemes			http
+// @Accept			json
+// @Produce			json
+// @Param   		id path int64 true "memo update by id" minimum(1)
+// @Param   		req body memo_dto.UpdateMemoReq true "writer and content for the new memo"
+// @Success			200 {object} memo_dto.UpdateMemoRes
+// @Failure			400
+// @Failure			404
+// @Failure			500
+// @Router			/v1/memo/{id} [put]
+func UpdateMemo(c *gin.Context, ctrl rest.MemoController) {
 	id, ok := validateInt64Param(c, "id")
 	if !ok {
 		c.Status(http.StatusBadRequest)
 		return
 	}
 
-	input, ok := validateBody[memo_dto.UpdateMemoInput](c)
+	req, ok := validateBody[memo_dto.UpdateMemoReq](c)
 	if !ok {
 		c.Status(http.StatusBadRequest)
 		return
 	}
-	input.ID = *id
+	req.ID = *id
 
-	c.JSON(ctrl.UpdateMemo(*input))
+	res, ok := ctrl.UpdateMemo(*req)
+	if !ok {
+		c.Status(http.StatusInternalServerError)
+	}
+	if res == nil {
+		c.Status(http.StatusNotFound)
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
 }
 
+// DeleteMemo
+//
+// @Summary			Delete memo
+// @Description		delete memo
+// @Tags			memo
+// @Schemes			http
+// @Accept			json
+// @Produce			json
+// @Param   		id path int64 true "memo delete by id" minimum(1)
+// @Success			200 {object} memo_dto.DeleteMemoRes
+// @Failure			400
+// @Failure			404
+// @Failure			500
+// @Router			/v1/memo/{id} [delete]
 func DeleteMemo(c *gin.Context, ctrl rest.MemoController) {
 	id, ok := validateInt64Param(c, "id")
 	if !ok {
@@ -64,7 +168,17 @@ func DeleteMemo(c *gin.Context, ctrl rest.MemoController) {
 		return
 	}
 
-	c.JSON(ctrl.DeleteMemo(memo_dto.DeleteMemoInput{ID: *id}))
+	res, ok := ctrl.DeleteMemo(memo_dto.DeleteMemoReq{ID: *id})
+	if !ok {
+		c.Status(http.StatusInternalServerError)
+		return
+	}
+	if res == nil {
+		c.Status(http.StatusNotFound)
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
 }
 
 func validateBody[T any](c *gin.Context) (*T, bool) {
