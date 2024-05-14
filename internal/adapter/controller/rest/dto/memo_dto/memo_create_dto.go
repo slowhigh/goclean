@@ -19,8 +19,8 @@ type CreateMemoOutput struct {
 	Content string `json:"content"`
 }
 
-func NewCreateMemoOutput(memo entity.Memo) *CreateMemoOutput {
-	return &CreateMemoOutput{
+func NewCreateMemoOutput(memo entity.Memo) CreateMemoOutput {
+	return CreateMemoOutput{
 		Writer:  memo.Writer,
 		Content: memo.Content,
 	}

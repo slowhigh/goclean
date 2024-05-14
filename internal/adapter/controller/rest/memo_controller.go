@@ -1,7 +1,6 @@
 package rest
 
 import (
-	"math"
 	"net/http"
 
 	"github.com/slowhigh/goclean/internal/adapter/controller/rest/dto"
@@ -19,72 +18,88 @@ func NewMemoController(msgUsecase memo.MemoUsecase) MemoController {
 	}
 }
 
-func (c MemoController) FindOneMemo(input memo_dto.FindOneMemoInput) (output *memo_dto.FindOneMemoOutput, status int) {
+func (c MemoController) FindOneMemo(input memo_dto.FindOneMemoInput) (int, *memo_dto.FindOneMemoOutput) {
 	isExist, ok := c.memoUcase.Exist(input.ID)
 	if !ok {
-		return nil, http.StatusInternalServerError
-	} else if !isExist {
-		return nil, http.StatusNotFound
+		return http.StatusInternalServerError, nil
+	}
+	if !isExist {
+		return http.StatusOK, nil
 	}
 
 	memo, ok := c.memoUcase.FindOne(input.ID)
 	if !ok {
-		return nil, http.StatusInternalServerError
+		return http.StatusInternalServerError, nil
 	}
 
-	return memo_dto.NewFindOneMemoOutput(memo), http.StatusOK
+	output := memo_dto.NewFindOneMemoOutput(*memo)
+	return http.StatusOK, &output
 }
 
-func (c MemoController) FindAllMemo(input memo_dto.FindAllMemoInput) (output *dto.Paginated[[]memo_dto.FindAllMemoOutput], status int) {
+func (c MemoController) FindAllMemo(input memo_dto.FindAllMemoInput) (int, *dto.Paginated[[]memo_dto.FindAllMemoOutput]) {
 	const perPage = 100
 
 	totalCount, ok := c.memoUcase.CountMemo(input.Start, input.End, input.Keyword)
 	if !ok {
-		return nil, http.StatusInternalServerError
+		return http.StatusInternalServerError, nil
 	}
 
 	memos, ok := c.memoUcase.FindAllMemo(input.Start, input.End, input.Keyword, perPage, *input.Page)
 	if !ok {
-		return nil, http.StatusInternalServerError
+		return http.StatusInternalServerError, nil
 	}
 
-	memoOutput := make([]memo_dto.FindAllMemoOutput, len(memos))
-	for i, memo := range memos {
+	memoOutput := make([]memo_dto.FindAllMemoOutput, len(*memos))
+	for i, memo := range *memos {
 		memoOutput[i] = *memo_dto.NewFindAllMemoOutput(memo)
 	}
 
-	return &dto.Paginated[[]memo_dto.FindAllMemoOutput]{
-		Page:       *input.Page,
-		PerPage:    perPage,
-		TotalPage:  int(math.Ceil(float64(totalCount) / float64(perPage))),
-		TotalCount: totalCount,
-		Data:       memoOutput,
-	}, http.StatusOK
+	output := dto.NewPaginatedOutput(memoOutput, *input.Page, perPage, *totalCount)
+	return http.StatusOK, &output
 }
 
-func (c MemoController) CreateMemo(input memo_dto.CreateMemoInput) (output *memo_dto.CreateMemoOutput, status int) {
+func (c MemoController) CreateMemo(input memo_dto.CreateMemoInput) (int, *memo_dto.CreateMemoOutput) {
 	memo, ok := c.memoUcase.CreateMemo(input.NewMemo())
 	if !ok {
-		return nil, http.StatusInternalServerError
+		return http.StatusInternalServerError, nil
 	}
 
-	return memo_dto.NewCreateMemoOutput(memo), http.StatusOK
+	output := memo_dto.NewCreateMemoOutput(*memo)
+	return http.StatusOK, &output
 }
 
-func (c MemoController) UpdateMemo(input memo_dto.UpdateMemoInput) (output *memo_dto.UpdateMemoOutput, status int) {
+func (c MemoController) UpdateMemo(input memo_dto.UpdateMemoInput) (int, *memo_dto.UpdateMemoOutput) {
+	isExist, ok := c.memoUcase.Exist(input.ID)
+	if !ok {
+		return http.StatusInternalServerError, nil
+	}
+	if !isExist {
+		return http.StatusOK, nil
+	}
+
 	memo, ok := c.memoUcase.UpdateMemo(input.ID, input.NewMemo())
 	if !ok {
-		return nil, http.StatusInternalServerError
+		return http.StatusInternalServerError, nil
 	}
 
-	return memo_dto.NewUpdateMemoOutput(memo), http.StatusOK
+	output := memo_dto.NewUpdateMemoOutput(*memo)
+	return http.StatusOK, &output
 }
 
-func (c MemoController) DeleteMemo(input memo_dto.DeleteMemoInput) (output *memo_dto.DeleteMemoOutput, status int) {
-	memo, ok := c.memoUcase.DeleteMemo(input.ID)
+func (c MemoController) DeleteMemo(input memo_dto.DeleteMemoInput) (int, *memo_dto.DeleteMemoOutput) {
+	isExist, ok := c.memoUcase.Exist(input.ID)
 	if !ok {
-		return nil, http.StatusInternalServerError
+		return http.StatusInternalServerError, nil
+	}
+	if !isExist {
+		return http.StatusOK, nil
 	}
 
-	return memo_dto.NewDeleteMemoOutput(memo), http.StatusOK
+	memo, ok := c.memoUcase.DeleteMemo(input.ID)
+	if !ok {
+		return http.StatusInternalServerError, nil
+	}
+
+	output := memo_dto.NewDeleteMemoOutput(*memo)
+	return http.StatusOK, &output
 }

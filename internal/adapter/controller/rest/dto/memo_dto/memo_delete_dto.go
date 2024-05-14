@@ -18,8 +18,8 @@ type DeleteMemoOutput struct {
 	Content   string    `json:"content"`
 }
 
-func NewDeleteMemoOutput(memo entity.Memo) *DeleteMemoOutput {
-	return &DeleteMemoOutput{
+func NewDeleteMemoOutput(memo entity.Memo) DeleteMemoOutput {
+	return DeleteMemoOutput{
 		ID:        int64(memo.ID),
 		CreatedAt: memo.CreatedAt,
 		UpdatedAt: memo.UpdatedAt,

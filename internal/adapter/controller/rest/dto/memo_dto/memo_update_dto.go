@@ -27,8 +27,8 @@ type UpdateMemoOutput struct {
 	Content   string    `json:"content"`
 }
 
-func NewUpdateMemoOutput(memo entity.Memo) *UpdateMemoOutput {
-	return &UpdateMemoOutput{
+func NewUpdateMemoOutput(memo entity.Memo) UpdateMemoOutput {
+	return UpdateMemoOutput{
 		ID:        int64(memo.ID),
 		CreatedAt: memo.CreatedAt,
 		UpdatedAt: memo.UpdatedAt,

@@ -18,8 +18,8 @@ type FindOneMemoOutput struct {
 	Content   string    `json:"content"`
 }
 
-func NewFindOneMemoOutput(memo entity.Memo) *FindOneMemoOutput {
-	return &FindOneMemoOutput{
+func NewFindOneMemoOutput(memo entity.Memo) FindOneMemoOutput {
+	return FindOneMemoOutput{
 		ID:        int64(memo.ID),
 		CreatedAt: memo.CreatedAt,
 		UpdatedAt: memo.UpdatedAt,

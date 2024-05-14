@@ -11,21 +11,13 @@ import (
 )
 
 func GetMemo(c *gin.Context, ctrl rest.MemoController) {
-	param := c.Param("id")
-	id, err := strconv.ParseInt(param, 10, 64)
-	if err != nil {
-		slog.Error("param is not int type.")
+	id, ok := validateInt64Param(c, "id")
+	if !ok {
 		c.Status(http.StatusBadRequest)
 		return
 	}
 
-	output, status := ctrl.FindOneMemo(memo_dto.FindOneMemoInput{ID: id})
-	if output == nil {
-		c.Status(status)
-		return
-	}
-
-	c.JSON(status, *output)
+	c.JSON(ctrl.FindOneMemo(memo_dto.FindOneMemoInput{ID: *id}))
 }
 
 func GetMemos(c *gin.Context, ctrl rest.MemoController) {
@@ -35,13 +27,7 @@ func GetMemos(c *gin.Context, ctrl rest.MemoController) {
 		return
 	}
 
-	output, status := ctrl.FindAllMemo(*input)
-	if output == nil {
-		c.Status(status)
-		return
-	}
-
-	c.JSON(status, *output)
+	c.JSON(ctrl.FindAllMemo(*input))
 }
 
 func PostMemo(c *gin.Context, ctrl rest.MemoController) {
@@ -51,20 +37,12 @@ func PostMemo(c *gin.Context, ctrl rest.MemoController) {
 		return
 	}
 
-	output, status := ctrl.CreateMemo(*input)
-	if output == nil {
-		c.Status(status)
-		return
-	}
-
-	c.JSON(status, *output)
+	c.JSON(ctrl.CreateMemo(*input))
 }
 
 func PutMemo(c *gin.Context, ctrl rest.MemoController) {
-	param := c.Param("id")
-	id, err := strconv.ParseInt(param, 10, 64)
-	if err != nil {
-		slog.Error("param is not int type.")
+	id, ok := validateInt64Param(c, "id")
+	if !ok {
 		c.Status(http.StatusBadRequest)
 		return
 	}
@@ -74,32 +52,19 @@ func PutMemo(c *gin.Context, ctrl rest.MemoController) {
 		c.Status(http.StatusBadRequest)
 		return
 	}
+	input.ID = *id
 
-	input.ID = id
-	output, status := ctrl.UpdateMemo(*input)
-	if output == nil {
-		c.Status(status)
-		return
-	}
-
-	c.JSON(status, *output)
+	c.JSON(ctrl.UpdateMemo(*input))
 }
+
 func DeleteMemo(c *gin.Context, ctrl rest.MemoController) {
-	param := c.Param("id")
-	id, err := strconv.ParseInt(param, 10, 64)
-	if err != nil {
-		slog.Error("param is not int type.")
+	id, ok := validateInt64Param(c, "id")
+	if !ok {
 		c.Status(http.StatusBadRequest)
 		return
 	}
 
-	output, status := ctrl.DeleteMemo(memo_dto.DeleteMemoInput{ID: id})
-	if output == nil {
-		c.Status(status)
-		return
-	}
-
-	c.JSON(status, *output)
+	c.JSON(ctrl.DeleteMemo(memo_dto.DeleteMemoInput{ID: *id}))
 }
 
 func validateBody[T any](c *gin.Context) (*T, bool) {
@@ -115,11 +80,22 @@ func validateBody[T any](c *gin.Context) (*T, bool) {
 
 func validateQuery[T any](c *gin.Context) (*T, bool) {
 	var input T
-	
+
 	if err := c.ShouldBindQuery(&input); err != nil {
 		slog.Error(err.Error())
 		return nil, false
 	}
 
 	return &input, true
+}
+
+func validateInt64Param(c *gin.Context, key string) (*int64, bool) {
+	param := c.Param(key)
+	id, err := strconv.ParseInt(param, 10, 64)
+	if err != nil {
+		slog.Error(err.Error())
+		return nil, false
+	}
+
+	return &id, true
 }
