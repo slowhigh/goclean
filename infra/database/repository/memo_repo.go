@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -8,6 +9,7 @@ import (
 	"github.com/slowhigh/goclean/infra/database"
 	"github.com/slowhigh/goclean/internal/entity"
 	"github.com/slowhigh/goclean/internal/usecase/interactor"
+	"gorm.io/gorm"
 )
 
 type MemoRepo struct {
@@ -24,8 +26,10 @@ func NewMemo(db *database.Database) interactor.MemoRepo {
 
 // Exist implements interactor.MemoRepo.
 func (clr *MemoRepo) Exist(id int64) (bool, error) {
-	err := clr.db.Take(&entity.Memo{}).Select("id").Where("id = ?", id).Error
-	if err != nil {
+	err := clr.db.Select("id").Take(&entity.Memo{}, id).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return false, nil
+	} else if err != nil {
 		return false, err
 	}
 
@@ -104,7 +108,7 @@ func (clr *MemoRepo) FindAll(start *time.Time, end *time.Time, keyword *string, 
 
 	err := clr.db.Model(&entity.Memo{}).
 		Where(fmt.Sprintf("1=1%s", conditions.String()), param...).
-		Order("created_at DESC").
+		Order("created_at ASC").
 		Offset((page - 1) * perPage).
 		Limit(perPage).
 		Debug().
@@ -135,6 +139,7 @@ func (clr *MemoRepo) Update(id int64, newMemo entity.Memo) (entity.Memo, error) 
 	}
 
 	memo = newMemo
+	memo.ID = uint(id)
 	err = clr.db.Save(&memo).Error
 	if err != nil {
 		return entity.Memo{}, err
