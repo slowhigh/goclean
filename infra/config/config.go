@@ -26,6 +26,7 @@ type Rest struct {
 type Database struct {
 	Host     string `mapstructure:"HOST"`
 	Port     int    `mapstructure:"PORT"`
+	LogLevel int    `mapstructure:"LOG_LEVEL"` // 1:Silent, 2:Error, 3:Warn, 4:Info
 	UserName string `mapstructure:"USER_NAME"`
 	Password string `mapstructure:"PASSWORD"`
 	DbName   string `mapstructure:"DB_NAME"`
