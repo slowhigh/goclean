@@ -8,7 +8,7 @@ import (
 	"github.com/slowhigh/goclean/infra/config"
 	"github.com/slowhigh/goclean/infra/router/handler"
 	"github.com/slowhigh/goclean/infra/router/middleware"
-	"github.com/slowhigh/goclean/internal/adapter/controller/rest"
+	"github.com/slowhigh/goclean/internal/controller/rest"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )

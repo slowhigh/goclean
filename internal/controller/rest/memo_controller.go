@@ -1,8 +1,8 @@
 package rest
 
 import (
-	"github.com/slowhigh/goclean/internal/adapter/controller/rest/dto"
-	"github.com/slowhigh/goclean/internal/adapter/controller/rest/dto/memo_dto"
+	"github.com/slowhigh/goclean/internal/controller/rest/dto"
+	"github.com/slowhigh/goclean/internal/controller/rest/dto/memo_dto"
 	"github.com/slowhigh/goclean/internal/usecase/memo"
 )
 

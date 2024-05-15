@@ -8,7 +8,6 @@ import (
 
 	"github.com/slowhigh/goclean/infra/database"
 	"github.com/slowhigh/goclean/internal/entity"
-	"github.com/slowhigh/goclean/internal/usecase/interactor"
 	"gorm.io/gorm"
 )
 
@@ -16,7 +15,7 @@ type MemoRepo struct {
 	db *database.Database
 }
 
-func NewMemo(db *database.Database) interactor.MemoRepo {
+func NewMemo(db *database.Database) entity.MemoRepo {
 	db.AutoMigrate(&entity.Memo{})
 
 	return &MemoRepo{
@@ -24,7 +23,7 @@ func NewMemo(db *database.Database) interactor.MemoRepo {
 	}
 }
 
-// Exist implements interactor.MemoRepo.
+// Exist implements entity.MemoRepo.
 func (clr *MemoRepo) Exist(id int64) (bool, error) {
 	err := clr.db.Select("id").Take(&entity.Memo{}, id).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -36,7 +35,7 @@ func (clr *MemoRepo) Exist(id int64) (bool, error) {
 	return true, nil
 }
 
-// FindOne implements interactor.MemoRepo.
+// FindOne implements entity.MemoRepo.
 func (clr *MemoRepo) FindOne(id int64) (entity.Memo, error) {
 	var (
 		memo entity.Memo
@@ -50,7 +49,7 @@ func (clr *MemoRepo) FindOne(id int64) (entity.Memo, error) {
 	return memo, nil
 }
 
-// Count implements interactor.MemoRepo.
+// Count implements entity.MemoRepo.
 func (clr *MemoRepo) Count(start, end *time.Time, keyword *string) (int64, error) {
 	var (
 		count      int64
@@ -83,7 +82,7 @@ func (clr *MemoRepo) Count(start, end *time.Time, keyword *string) (int64, error
 	return count, nil
 }
 
-// FindAll implements interactor.MemoRepo.
+// FindAll implements entity.MemoRepo.
 func (clr *MemoRepo) FindAll(start *time.Time, end *time.Time, keyword *string, perPage int, page int) ([]entity.Memo, error) {
 	var (
 		memos      []entity.Memo
@@ -117,7 +116,7 @@ func (clr *MemoRepo) FindAll(start *time.Time, end *time.Time, keyword *string, 
 	return memos, err
 }
 
-// Create implements interactor.MemoRepo.
+// Create implements entity.MemoRepo.
 func (clr *MemoRepo) Create(newMemo entity.Memo) (entity.Memo, error) {
 	err := clr.db.Create(&newMemo).Error
 	if err != nil {
@@ -127,7 +126,7 @@ func (clr *MemoRepo) Create(newMemo entity.Memo) (entity.Memo, error) {
 	return newMemo, nil
 }
 
-// Update implements interactor.MemoRepo.
+// Update implements entity.MemoRepo.
 func (clr *MemoRepo) Update(id int64, newMemo entity.Memo) (entity.Memo, error) {
 	var (
 		memo entity.Memo
@@ -148,7 +147,7 @@ func (clr *MemoRepo) Update(id int64, newMemo entity.Memo) (entity.Memo, error) 
 	return memo, nil
 }
 
-// Delete implements interactor.MemoRepo.
+// Delete implements entity.MemoRepo.
 func (clr *MemoRepo) Delete(id int64) (entity.Memo, error) {
 	var (
 		memo entity.Memo

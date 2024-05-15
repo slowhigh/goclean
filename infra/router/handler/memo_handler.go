@@ -6,8 +6,8 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/slowhigh/goclean/internal/adapter/controller/rest"
-	"github.com/slowhigh/goclean/internal/adapter/controller/rest/dto/memo_dto"
+	"github.com/slowhigh/goclean/internal/controller/rest/dto/memo_dto"
+	"github.com/slowhigh/goclean/internal/controller/rest"
 )
 
 // GetMemo

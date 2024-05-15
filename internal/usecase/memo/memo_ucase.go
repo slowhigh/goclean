@@ -5,14 +5,13 @@ import (
 	"time"
 
 	"github.com/slowhigh/goclean/internal/entity"
-	"github.com/slowhigh/goclean/internal/usecase/interactor"
 )
 
 type MemoUsecase struct {
-	memoRepo interactor.MemoRepo
+	memoRepo entity.MemoRepo
 }
 
-func NewMemoUsecase(memoRepo interactor.MemoRepo) MemoUsecase {
+func NewMemoUsecase(memoRepo entity.MemoRepo) MemoUsecase {
 	return MemoUsecase{
 		memoRepo: memoRepo,
 	}

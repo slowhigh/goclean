@@ -7,9 +7,13 @@ $ docker run -d --name goclean --env=POSTGRES_USER=goclean --env=POSTGRES_PASSWO
 ```bash
 $ go run ./cmd/server
 
+$ go install github.com/google/wire/cmd/wire@latest
 $ wire ./cmd/server
 
 $ swag init -pd -g ./cmd/server/main.go -o ./docs/
+
+$ go install golang.org/x/tools/cmd/goimports@latest
+$ goimports -w .
 ```
 
 #### swagger
