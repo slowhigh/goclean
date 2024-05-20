@@ -14,6 +14,57 @@ $ swag init -pd -g ./cmd/server/main.go -o ./docs/
 
 $ go install golang.org/x/tools/cmd/goimports@latest
 $ goimports -w .
+
+├── .gitignore
+├── .vscode
+│  └── settings.json
+├── cmd
+│  └── server
+│    ├── main.go
+│    ├── wire_gen.go
+│    └── wire.go
+├── docs
+│  ├── docs.go
+│  ├── swagger.json
+│  └── swagger.yaml
+├── go.mod
+├── go.sum
+├── infra
+│  ├── config
+│  │  ├── config.go
+│  │  └── config.json
+│  ├── database
+│  │  ├── database.go
+│  │  └── repository
+│  │    └── memo_repo.go
+│  ├── infra.go
+│  └── router
+│    ├── handler
+│    │  └── memo_handler.go
+│    ├── middleware
+│    │  └── middleware.go
+│    └── router.go
+├── internal
+│  ├── controller
+│  │  ├── controller.go
+│  │  └── rest
+│  │    ├── dto
+│  │    │  ├── memo_dto
+│  │    │  │  ├── memo_create_dto.go
+│  │    │  │  ├── memo_delete_dto.go
+│  │    │  │  ├── memo_find_all_dto.go
+│  │    │  │  ├── memo_find_one_dto.go
+│  │    │  │  └── memo_update_dto.go
+│  │    │  └── pagination_dto.go
+│  │    └── memo_controller.go
+│  ├── entity
+│  │  └── memo.go
+│  └── usecase
+│    ├── memo
+│    │  └── memo_ucase.go
+│    └── usecase.go
+├── LICENSE
+└── README.md
 ```
 
 #### swagger
