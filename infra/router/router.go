@@ -4,11 +4,11 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
-	docs "github.com/slowhigh/goclean/docs"
 	"github.com/slowhigh/goclean/infra/config"
 	"github.com/slowhigh/goclean/infra/router/handler"
 	"github.com/slowhigh/goclean/infra/router/middleware"
 	"github.com/slowhigh/goclean/internal/controller/rest"
+	docs "github.com/slowhigh/goclean/third_party/docs"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -26,7 +26,13 @@ func NewRouter(conf *config.Config, ctrl rest.MemoController) Router {
 	r := gin.Default()
 	r.Use(middleware.CorsHandler())
 
-	docs.SwaggerInfo.BasePath = "/"
+	docs.SwaggerInfo.Title = conf.Swagger.Title
+	docs.SwaggerInfo.Version = conf.Swagger.Version
+	docs.SwaggerInfo.Description = conf.Swagger.Description
+	docs.SwaggerInfo.Schemes = conf.Swagger.Schemes
+	docs.SwaggerInfo.Host = conf.Swagger.Host
+	docs.SwaggerInfo.BasePath = conf.Swagger.BasePath
+
 	v1 := r.Group("/v1")
 	{
 		v1.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))

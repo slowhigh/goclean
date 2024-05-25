@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
         "goclean",
+        "goimports",
         "gonic",
         "gorm",
         "interactor",

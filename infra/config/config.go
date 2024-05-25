@@ -12,6 +12,7 @@ type Config struct {
 	App      App      `mapstructure:"APP"`
 	Rest     Rest     `mapstructure:"REST"`
 	Database Database `mapstructure:"DATABASE"`
+	Swagger  Swagger  `mapstructure:"SWAGGER"`
 }
 
 type App struct {
@@ -20,7 +21,7 @@ type App struct {
 
 type Rest struct {
 	Port int    `mapstructure:"PORT"`
-	Mode string `mapstructure:"MODE"` // "debug" or "release"
+	Mode string `mapstructure:"MODE"` // "debug", "release"
 }
 
 type Database struct {
@@ -30,6 +31,15 @@ type Database struct {
 	UserName string `mapstructure:"USER_NAME"`
 	Password string `mapstructure:"PASSWORD"`
 	DbName   string `mapstructure:"DB_NAME"`
+}
+
+type Swagger struct {
+	Title       string   `mapstructure:"TITLE"`
+	Version     string   `mapstructure:"VERSION"`
+	Description string   `mapstructure:"DESCRIPTION"`
+	Schemes     []string `mapstructure:"SCHEMES"`
+	Host        string   `mapstructure:"HOST"`
+	BasePath    string   `mapstructure:"BASE_PATH"`
 }
 
 func NewConfig() (*Config, error) {
@@ -47,7 +57,7 @@ func NewConfig() (*Config, error) {
 		return nil, err
 	}
 
-	viper.AutomaticEnv()
+	viper.AutomaticEnv() // import env by OS
 
 	err = viper.Unmarshal(&conf)
 	if err != nil {

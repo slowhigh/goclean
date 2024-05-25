@@ -13,5 +13,13 @@
     "PASSWORD": "goclean1!",
     "DB_NAME": "goclean",
     "LOG_LEVEL": 4
+  },
+  "SWAGGER": {
+    "TITLE": "goclean",
+    "VERSION": "1.0",
+    "DESCRIPTION": "Go + Clean Architecture",
+    "SCHEMES": [ "http" ],
+    "HOST": "localhost:5000",
+    "BASE_PATH": ""
   }
 }

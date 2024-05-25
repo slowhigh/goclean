@@ -62,7 +62,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.FindAllMemoRes"
+                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.FindAllMemoRes"
                         }
                     },
                     "400": {
@@ -95,7 +95,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.CreateMemoReq"
+                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.CreateMemoReq"
                         }
                     }
                 ],
@@ -103,7 +103,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.CreateMemoRes"
+                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.CreateMemoRes"
                         }
                     },
                     "400": {
@@ -141,7 +141,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.FindOneMemoRes"
+                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.FindOneMemoRes"
                         }
                     },
                     "400": {
@@ -182,7 +182,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.UpdateMemoReq"
+                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.UpdateMemoReq"
                         }
                     }
                 ],
@@ -190,7 +190,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.UpdateMemoRes"
+                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.UpdateMemoRes"
                         }
                     },
                     "400": {
@@ -230,7 +230,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.DeleteMemoRes"
+                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.DeleteMemoRes"
                         }
                     },
                     "400": {
@@ -247,7 +247,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.CreateMemoReq": {
+        "github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.CreateMemoReq": {
             "type": "object",
             "required": [
                 "content",
@@ -266,7 +266,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.CreateMemoRes": {
+        "github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.CreateMemoRes": {
             "type": "object",
             "properties": {
                 "content": {
@@ -277,27 +277,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.DeleteMemoRes": {
-            "type": "object",
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "create_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "update_at": {
-                    "type": "string"
-                },
-                "writer": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.FindAllMemoRes": {
+        "github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.DeleteMemoRes": {
             "type": "object",
             "properties": {
                 "content": {
@@ -317,7 +297,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.FindOneMemoRes": {
+        "github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.FindAllMemoRes": {
             "type": "object",
             "properties": {
                 "content": {
@@ -337,7 +317,27 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.UpdateMemoReq": {
+        "github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.FindOneMemoRes": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "create_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "update_at": {
+                    "type": "string"
+                },
+                "writer": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.UpdateMemoReq": {
             "type": "object",
             "required": [
                 "content",
@@ -356,7 +356,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.UpdateMemoRes": {
+        "github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.UpdateMemoRes": {
             "type": "object",
             "properties": {
                 "content": {
@@ -381,12 +381,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.0",
-	Host:             "localhost:5000",
+	Version:          "",
+	Host:             "",
 	BasePath:         "",
-	Schemes:          []string{"http"},
-	Title:            "goclean",
-	Description:      "goclean",
+	Schemes:          []string{},
+	Title:            "",
+	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

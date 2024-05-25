@@ -1,15 +1,8 @@
 {
-    "schemes": [
-        "http"
-    ],
     "swagger": "2.0",
     "info": {
-        "description": "goclean",
-        "title": "goclean",
-        "contact": {},
-        "version": "1.0"
+        "contact": {}
     },
-    "host": "localhost:5000",
     "paths": {
         "/v1/memo": {
             "get": {
@@ -58,7 +51,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.FindAllMemoRes"
+                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.FindAllMemoRes"
                         }
                     },
                     "400": {
@@ -91,7 +84,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.CreateMemoReq"
+                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.CreateMemoReq"
                         }
                     }
                 ],
@@ -99,7 +92,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.CreateMemoRes"
+                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.CreateMemoRes"
                         }
                     },
                     "400": {
@@ -137,7 +130,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.FindOneMemoRes"
+                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.FindOneMemoRes"
                         }
                     },
                     "400": {
@@ -178,7 +171,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.UpdateMemoReq"
+                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.UpdateMemoReq"
                         }
                     }
                 ],
@@ -186,7 +179,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.UpdateMemoRes"
+                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.UpdateMemoRes"
                         }
                     },
                     "400": {
@@ -226,7 +219,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.DeleteMemoRes"
+                            "$ref": "#/definitions/github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.DeleteMemoRes"
                         }
                     },
                     "400": {
@@ -243,7 +236,7 @@
         }
     },
     "definitions": {
-        "github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.CreateMemoReq": {
+        "github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.CreateMemoReq": {
             "type": "object",
             "required": [
                 "content",
@@ -262,7 +255,7 @@
                 }
             }
         },
-        "github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.CreateMemoRes": {
+        "github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.CreateMemoRes": {
             "type": "object",
             "properties": {
                 "content": {
@@ -273,27 +266,7 @@
                 }
             }
         },
-        "github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.DeleteMemoRes": {
-            "type": "object",
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "create_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "update_at": {
-                    "type": "string"
-                },
-                "writer": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.FindAllMemoRes": {
+        "github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.DeleteMemoRes": {
             "type": "object",
             "properties": {
                 "content": {
@@ -313,7 +286,7 @@
                 }
             }
         },
-        "github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.FindOneMemoRes": {
+        "github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.FindAllMemoRes": {
             "type": "object",
             "properties": {
                 "content": {
@@ -333,7 +306,27 @@
                 }
             }
         },
-        "github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.UpdateMemoReq": {
+        "github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.FindOneMemoRes": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "create_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "update_at": {
+                    "type": "string"
+                },
+                "writer": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.UpdateMemoReq": {
             "type": "object",
             "required": [
                 "content",
@@ -352,7 +345,7 @@
                 }
             }
         },
-        "github_com_slowhigh_goclean_internal_adapter_controller_rest_dto_memo_dto.UpdateMemoRes": {
+        "github_com_slowhigh_goclean_internal_controller_rest_dto_memo_dto.UpdateMemoRes": {
             "type": "object",
             "properties": {
                 "content": {
