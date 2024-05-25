@@ -1,4 +1,4 @@
-name: ci
+name: build
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 concurrency:
-  group: ci
+  group: build
   cancel-in-progress: true
 
 jobs:
