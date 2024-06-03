@@ -3,6 +3,8 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/slowhigh/goclean)](https://goreportcard.com/report/github.com/slowhigh/goclean)
 [![codebeat badge](https://codebeat.co/badges/20be09ab-0fe5-4789-9bcc-731c193aa59e)](https://codebeat.co/projects/github-com-slowhigh-goclean-main)
 
+You can start developing right away in Go (Golang) with a streamlined `Clean Architecture` setup that eliminates unnecessary elements.
+
 ## Contents
  - [Project structure](#project-structure)
  - [Getting started](#getting-started)
@@ -13,7 +15,7 @@
 - [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
   - Layer Mapping
     - `/infra` ------------------------------------------ "Frameworks and Drivers" Layer
-    - `/controller` ------------------------------------- "Interface Adapters" Layer
+    - `/controller` ------------------------------------ "Interface Adapters" Layer
     - `/usecase` ---------------------------------------- "Use Cases" Layer
     - `/entity` ----------------------------------------- "Entities" Layer
   - Crossing boundaries
