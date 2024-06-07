@@ -12,10 +12,10 @@ import (
 )
 
 type MemoRepo struct {
-	db *database.Database
+	db database.Database
 }
 
-func NewMemo(db *database.Database) entity.MemoRepo {
+func NewMemo(db database.Database) entity.MemoRepo {
 	db.AutoMigrate(&entity.Memo{})
 
 	return &MemoRepo{

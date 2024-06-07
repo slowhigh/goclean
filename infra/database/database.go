@@ -16,7 +16,7 @@ type Database struct {
 	*gorm.DB
 }
 
-func NewDatabase(conf *config.Config) (*Database, error) {
+func NewDatabase(conf config.Config) Database {
 	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable TimeZone=Asia/Seoul",
 		conf.Database.Host,
 		conf.Database.Port,
@@ -40,10 +40,8 @@ func NewDatabase(conf *config.Config) (*Database, error) {
 		Logger: newLogger,
 	})
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
 
-	return &Database{
-		DB: postgres,
-	}, nil
+	return Database{DB: postgres}
 }

@@ -14,11 +14,11 @@ import (
 )
 
 type Router struct {
-	router *gin.Engine
-	conf   *config.Config
+	router   *gin.Engine
+	restConf config.Rest
 }
 
-func NewRouter(conf *config.Config, ctrl rest.MemoController) Router {
+func NewRouter(conf config.Config, ctrl rest.MemoController) Router {
 	if conf.Rest.Mode == "release" {
 		gin.SetMode(gin.ReleaseMode)
 	}
@@ -47,11 +47,11 @@ func NewRouter(conf *config.Config, ctrl rest.MemoController) Router {
 	}
 
 	return Router{
-		router: r,
-		conf:   conf,
+		router:   r,
+		restConf: conf.Rest,
 	}
 }
 
 func (r Router) Run() error {
-	return r.router.Run(fmt.Sprintf(":%d", r.conf.Rest.Port))
+	return r.router.Run(fmt.Sprintf(":%d", r.restConf.Port))
 }
