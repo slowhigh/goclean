@@ -2,7 +2,7 @@ package rest
 
 import (
 	"github.com/slowhigh/goclean/internal/controller/rest/dto"
-	"github.com/slowhigh/goclean/internal/controller/rest/dto/memo_dto"
+	"github.com/slowhigh/goclean/internal/controller/rest/dto/memoDto"
 	"github.com/slowhigh/goclean/internal/usecase/memo"
 )
 
@@ -16,7 +16,7 @@ func NewMemoController(msgUsecase memo.MemoUsecase) MemoController {
 	}
 }
 
-func (c MemoController) FindOneMemo(input memo_dto.FindOneMemoReq) (*memo_dto.FindOneMemoRes, bool) {
+func (c MemoController) FindOneMemo(input memoDto.FindOneMemoReq) (*memoDto.FindOneMemoRes, bool) {
 	isExist, ok := c.memoUcase.Exist(input.ID)
 	if !ok {
 		return nil, false
@@ -30,13 +30,13 @@ func (c MemoController) FindOneMemo(input memo_dto.FindOneMemoReq) (*memo_dto.Fi
 		return nil, false
 	}
 
-	output := memo_dto.NewFindOneMemoRes(*memo)
+	output := memoDto.NewFindOneMemoRes(*memo)
 	return &output, true
 }
 
-func (c MemoController) FindAllMemo(input memo_dto.FindAllMemoReq) (dto.Paginated[[]memo_dto.FindAllMemoRes], bool) {
+func (c MemoController) FindAllMemo(input memoDto.FindAllMemoReq) (dto.Paginated[[]memoDto.FindAllMemoRes], bool) {
 	const perPage = 100
-	data := dto.Paginated[[]memo_dto.FindAllMemoRes]{}
+	data := dto.Paginated[[]memoDto.FindAllMemoRes]{}
 
 	totalCount, ok := c.memoUcase.CountMemo(input.Start, input.End, input.Keyword)
 	if !ok {
@@ -48,26 +48,26 @@ func (c MemoController) FindAllMemo(input memo_dto.FindAllMemoReq) (dto.Paginate
 		return data, false
 	}
 
-	memoOutput := make([]memo_dto.FindAllMemoRes, len(*memos))
+	memoOutput := make([]memoDto.FindAllMemoRes, len(*memos))
 	for i, memo := range *memos {
-		memoOutput[i] = memo_dto.NewFindAllMemoRes(memo)
+		memoOutput[i] = memoDto.NewFindAllMemoRes(memo)
 	}
 
 	data = dto.NewPaginatedRes(memoOutput, *input.Page, perPage, *totalCount)
 	return data, true
 }
 
-func (c MemoController) CreateMemo(input memo_dto.CreateMemoReq) (memo_dto.CreateMemoRes, bool) {
+func (c MemoController) CreateMemo(input memoDto.CreateMemoReq) (memoDto.CreateMemoRes, bool) {
 	memo, ok := c.memoUcase.CreateMemo(input.NewMemo())
 	if !ok {
-		return memo_dto.CreateMemoRes{}, false
+		return memoDto.CreateMemoRes{}, false
 	}
 
-	output := memo_dto.NewCreateMemoRes(*memo)
+	output := memoDto.NewCreateMemoRes(*memo)
 	return output, true
 }
 
-func (c MemoController) UpdateMemo(input memo_dto.UpdateMemoReq) (*memo_dto.UpdateMemoRes, bool) {
+func (c MemoController) UpdateMemo(input memoDto.UpdateMemoReq) (*memoDto.UpdateMemoRes, bool) {
 	isExist, ok := c.memoUcase.Exist(input.ID)
 	if !ok {
 		return nil, false
@@ -81,11 +81,11 @@ func (c MemoController) UpdateMemo(input memo_dto.UpdateMemoReq) (*memo_dto.Upda
 		return nil, false
 	}
 
-	output := memo_dto.NewUpdateMemoRes(*memo)
+	output := memoDto.NewUpdateMemoRes(*memo)
 	return &output, true
 }
 
-func (c MemoController) DeleteMemo(input memo_dto.DeleteMemoReq) (*memo_dto.DeleteMemoRes, bool) {
+func (c MemoController) DeleteMemo(input memoDto.DeleteMemoReq) (*memoDto.DeleteMemoRes, bool) {
 	isExist, ok := c.memoUcase.Exist(input.ID)
 	if !ok {
 		return nil, false
@@ -99,6 +99,6 @@ func (c MemoController) DeleteMemo(input memo_dto.DeleteMemoReq) (*memo_dto.Dele
 		return nil, false
 	}
 
-	output := memo_dto.NewDeleteMemoRes(*memo)
+	output := memoDto.NewDeleteMemoRes(*memo)
 	return &output, true
 }

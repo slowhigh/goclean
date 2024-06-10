@@ -1,4 +1,4 @@
-package memo_dto
+package memoDto
 
 import "github.com/slowhigh/goclean/internal/entity"
 

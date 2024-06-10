@@ -1,4 +1,4 @@
-package memo_dto
+package memoDto
 
 import (
 	"time"
@@ -6,14 +6,11 @@ import (
 	"github.com/slowhigh/goclean/internal/entity"
 )
 
-type FindAllMemoReq struct {
-	Start   *time.Time `form:"start"`
-	End     *time.Time `form:"end"`
-	Keyword *string    `form:"keyword"`
-	Page    *int       `form:"page" binding:"required,gte=1"`
+type DeleteMemoReq struct {
+	ID int64
 }
 
-type FindAllMemoRes struct {
+type DeleteMemoRes struct {
 	ID        int64     `json:"id"`
 	CreatedAt time.Time `json:"create_at"`
 	UpdatedAt time.Time `json:"update_at"`
@@ -21,8 +18,8 @@ type FindAllMemoRes struct {
 	Content   string    `json:"content"`
 }
 
-func NewFindAllMemoRes(memo entity.Memo) FindAllMemoRes {
-	return FindAllMemoRes{
+func NewDeleteMemoRes(memo entity.Memo) DeleteMemoRes {
+	return DeleteMemoRes{
 		ID:        int64(memo.ID),
 		CreatedAt: memo.CreatedAt,
 		UpdatedAt: memo.UpdatedAt,

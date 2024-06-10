@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/slowhigh/goclean/internal/controller/rest"
-	"github.com/slowhigh/goclean/internal/controller/rest/dto/memo_dto"
+	"github.com/slowhigh/goclean/internal/controller/rest/dto/memoDto"
 )
 
 // GetMemo
@@ -31,7 +31,7 @@ func GetMemo(c *gin.Context, ctrl rest.MemoController) {
 		return
 	}
 
-	res, ok := ctrl.FindOneMemo(memo_dto.FindOneMemoReq{ID: *id})
+	res, ok := ctrl.FindOneMemo(memoDto.FindOneMemoReq{ID: *id})
 	if !ok {
 		c.Status(http.StatusInternalServerError)
 		return
@@ -62,7 +62,7 @@ func GetMemo(c *gin.Context, ctrl rest.MemoController) {
 // @Failure			500
 // @Router			/v1/memo [get]
 func ListMemos(c *gin.Context, ctrl rest.MemoController) {
-	req, ok := validateQuery[memo_dto.FindAllMemoReq](c)
+	req, ok := validateQuery[memoDto.FindAllMemoReq](c)
 	if !ok {
 		c.Status(http.StatusBadRequest)
 		return
@@ -91,7 +91,7 @@ func ListMemos(c *gin.Context, ctrl rest.MemoController) {
 // @Failure			500
 // @Router			/v1/memo [post]
 func CreateMemo(c *gin.Context, ctrl rest.MemoController) {
-	req, ok := validateBody[memo_dto.CreateMemoReq](c)
+	req, ok := validateBody[memoDto.CreateMemoReq](c)
 	if !ok {
 		c.Status(http.StatusBadRequest)
 		return
@@ -128,7 +128,7 @@ func UpdateMemo(c *gin.Context, ctrl rest.MemoController) {
 		return
 	}
 
-	req, ok := validateBody[memo_dto.UpdateMemoReq](c)
+	req, ok := validateBody[memoDto.UpdateMemoReq](c)
 	if !ok {
 		c.Status(http.StatusBadRequest)
 		return
@@ -168,7 +168,7 @@ func DeleteMemo(c *gin.Context, ctrl rest.MemoController) {
 		return
 	}
 
-	res, ok := ctrl.DeleteMemo(memo_dto.DeleteMemoReq{ID: *id})
+	res, ok := ctrl.DeleteMemo(memoDto.DeleteMemoReq{ID: *id})
 	if !ok {
 		c.Status(http.StatusInternalServerError)
 		return
