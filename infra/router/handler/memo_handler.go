@@ -19,7 +19,7 @@ import (
 // @Accept			json
 // @Produce			json
 // @Param   		id path int64 true "ID search by id"
-// @Success			200 {object} memo_dto.FindOneMemoRes
+// @Success			200 {object} memoDto.FindOneMemoRes
 // @Failure			400
 // @Failure			404
 // @Failure			500
@@ -56,7 +56,7 @@ func GetMemo(c *gin.Context, ctrl rest.MemoController) {
 // @Param   		end			query	string	false	"createAt search by end"		example("2021-02-18T21:54:42.123Z")
 // @Param   		keyword		query	string	false	"content search by keyword"
 // @Param   		page		query	int		true	"content search by keyword"		minimum(1)
-// @Success			200 {object} memo_dto.FindAllMemoRes
+// @Success			200 {object} memoDto.FindAllMemoRes
 // @Failure			400
 // @Failure			404
 // @Failure			500
@@ -85,8 +85,8 @@ func ListMemos(c *gin.Context, ctrl rest.MemoController) {
 // @Schemes			http
 // @Accept			json
 // @Produce			json
-// @Param   		request body memo_dto.CreateMemoReq true "writer and content for the new memo"
-// @Success			200 {object} memo_dto.CreateMemoRes
+// @Param   		request body memoDto.CreateMemoReq true "writer and content for the new memo"
+// @Success			200 {object} memoDto.CreateMemoRes
 // @Failure			400
 // @Failure			500
 // @Router			/v1/memo [post]
@@ -115,8 +115,8 @@ func CreateMemo(c *gin.Context, ctrl rest.MemoController) {
 // @Accept			json
 // @Produce			json
 // @Param   		id path int64 true "memo update by id" minimum(1)
-// @Param   		req body memo_dto.UpdateMemoReq true "writer and content for the new memo"
-// @Success			200 {object} memo_dto.UpdateMemoRes
+// @Param   		req body memoDto.UpdateMemoReq true "writer and content for the new memo"
+// @Success			200 {object} memoDto.UpdateMemoRes
 // @Failure			400
 // @Failure			404
 // @Failure			500
@@ -156,7 +156,7 @@ func UpdateMemo(c *gin.Context, ctrl rest.MemoController) {
 // @Accept			json
 // @Produce			json
 // @Param   		id path int64 true "memo delete by id" minimum(1)
-// @Success			200 {object} memo_dto.DeleteMemoRes
+// @Success			200 {object} memoDto.DeleteMemoRes
 // @Failure			400
 // @Failure			404
 // @Failure			500
