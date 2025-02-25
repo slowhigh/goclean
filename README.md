@@ -4,6 +4,7 @@
 [![codebeat badge](https://codebeat.co/badges/20be09ab-0fe5-4789-9bcc-731c193aa59e)](https://codebeat.co/projects/github-com-slowhigh-goclean-main)
 
 You can start developing right away in Go (Golang) with a streamlined `Clean Architecture` setup that eliminates unnecessary elements.
+![image](https://github.com/user-attachments/assets/00a39eee-bda6-4da1-9fb8-58be84dc86a0)
 
 ## Contents
  - [Project structure](#project-structure)
